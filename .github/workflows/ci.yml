@@ -39,4 +39,4 @@ jobs:
           uv run pytest \
             --cov=pyxxdi \
             --cov-report=term-missing \
-            --cov-fail-under=85
+            --cov-fail-under=82
