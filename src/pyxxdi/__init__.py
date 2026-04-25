@@ -32,6 +32,20 @@ from pyxxdi.io import (
     read_scopus,
     read_wos,
 )
+from pyxxdi.metrics import (
+    g_index,
+    h_index,
+    metric,
+    x_index,
+    xc_index,
+    xd_field_normalized_index,
+    xd_fractional_index,
+    xd_index,
+    xd_ivw_index,
+    xo_index,
+    xx_index,
+    xxd_index,
+)
 
 # ---------------------------------------------------------------------
 # Utils layer
@@ -82,4 +96,17 @@ __all__ = [
     "drop_duplicate_title_year",
     "clean_affiliations",
     "clean_keywords",
+    # metrics
+    "metric",
+    "h_index",
+    "g_index",
+    "x_index",
+    "xd_index",
+    "xd_fractional_index",
+    "xd_field_normalized_index",
+    "xd_ivw_index",
+    "xc_index",
+    "xo_index",
+    "xx_index",
+    "xxd_index",
 ]
