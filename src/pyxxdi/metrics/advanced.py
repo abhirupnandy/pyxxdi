@@ -10,7 +10,7 @@ from pyxxdi.metrics.xd_index import xd_index
 def xc_index(
     df: pd.DataFrame,
     *,
-    unit: str = "institution",
+    unit: str | None = "institution",
     category: str = "category",
     keyword: str = "keyword",
     citations: str = "citations",
@@ -39,7 +39,7 @@ def xc_index(
 def xo_index(
     df: pd.DataFrame,
     *,
-    unit: str = "institution",
+    unit: str | None = "institution",
     category: str = "category",
     keyword: str = "keyword",
     citations: str = "citations",
@@ -49,7 +49,13 @@ def xo_index(
     """
     rows = []
 
-    for name, group in df.groupby(unit):
+    grouped = (
+        df.groupby(unit)
+        if unit is not None and unit in df.columns
+        else [("all", df)]
+    )
+
+    for name, group in grouped:
         scores = []
 
         for _, sub in group.groupby(category):

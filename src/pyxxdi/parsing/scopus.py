@@ -1,59 +1,45 @@
+"""Compatibility wrapper for Scopus parsing."""
+
 from __future__ import annotations
+
+from pathlib import Path
+from typing import Any
 
 import pandas as pd
 
-from pyxxdi.schemas import harmonize_schema
+from pyxxdi.io.scopus import read_scopus as _read_scopus
 
 
 def _split_semicolon(value: object) -> list[str]:
-    """
-    Convert semicolon-separated strings into clean list.
-    """
     if pd.isna(value):
         return []
-
-    parts = [x.strip() for x in str(value).split(";")]
-    return [x for x in parts if x]
-
-
-def _prepare_keywords(df: pd.DataFrame) -> pd.DataFrame:
-    if "author_keywords" in df.columns:
-        df["author_keywords"] = df["author_keywords"].apply(_split_semicolon)
-
-    if "index_keywords" in df.columns:
-        df["index_keywords"] = df["index_keywords"].apply(_split_semicolon)
-
-    return df
-
-
-def _prepare_affiliations(df: pd.DataFrame) -> pd.DataFrame:
-    if "institution" in df.columns:
-        df["institutions"] = df["institution"].apply(_split_semicolon)
-
-    return df
+    return [x.strip() for x in str(value).split(";") if x.strip()]
 
 
 def read_scopus(
-    path: str,
+    path: str | Path,
     *,
     encoding: str = "utf-8",
     low_memory: bool = False,
+    canonical: bool = True,
+    **kwargs: Any,
 ) -> pd.DataFrame:
-    """
-    Read Scopus CSV into canonical pyxxdi schema.
-    """
-    df = pd.read_csv(
+    """Read Scopus files via the canonical IO implementation."""
+    df = _read_scopus(
         path,
         encoding=encoding,
         low_memory=low_memory,
+        canonical=canonical,
+        **kwargs,
     )
 
-    df = harmonize_schema(df)
-    df = _prepare_keywords(df)
-    df = _prepare_affiliations(df)
+    for col in ("author_keywords", "index_keywords"):
+        if col in df.columns:
+            df[col] = df[col].map(_split_semicolon)
 
-    # backward compatibility + phase3 naming
-    df["source_db"] = "scopus"
+    if "institution" in df.columns:
+        df["institutions"] = df["institution"].map(_split_semicolon)
+
     df["data_source"] = "scopus"
     df["raw_source_format"] = "csv"
 
