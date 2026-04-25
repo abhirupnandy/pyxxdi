@@ -4,12 +4,16 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pyxxdi"
-version = "0.2.0"
+version = "0.3.0"
 description = "Modern bibliometric analytics package for x-index, xd-index, ranking, benchmarking, and research evaluation."
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
 authors = [
+  { name = "Abhirup Nandy" },
+  { name = "Nilabhra Rohan Das" }
+]
+maintainers = [
   { name = "Abhirup Nandy" }
 ]
 keywords = [
@@ -21,7 +25,7 @@ keywords = [
   "analytics"
 ]
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 4 - Beta",
   "Intended Audience :: Science/Research",
   "Intended Audience :: Education",
   "License :: OSI Approved :: MIT License",
@@ -29,8 +33,10 @@ classifiers = [
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Topic :: Scientific/Engineering :: Information Analysis"
 ]
+Documentation = "https://github.com/abhirupnandy/pyxxdi"
 
 dependencies = [
   "pandas>=2.2.0",

@@ -4,22 +4,29 @@ pyxxdi public API.
 
 from importlib.metadata import PackageNotFoundError, version
 
+from .analytics import (
+    author_profile,
+    collaboration_network,
+    compare_institutions,
+    compare_researchers,
+    export_report,
+    institution_profile,
+    researcher_dashboard,
+    temporal_trends,
+)
+from .classify import classify_subjects
+
 try:
     __version__ = version("pyxxdi")
 except PackageNotFoundError:
     __version__ = "0.0.0"
 
-
-# ---------------------------------------------------------------------
-# IO layer
-# ---------------------------------------------------------------------
+from pyxxdi.affiliations import clean_affiliations
 
 # ---------------------------------------------------------------------
 # Cleaning layer
 # ---------------------------------------------------------------------
 from pyxxdi.cleaning import (
-    clean_affiliations,
-    clean_keywords,
     clean_publications,
     deduplicate,
     drop_duplicate_doi,
@@ -32,6 +39,14 @@ from pyxxdi.io import (
     read_scopus,
     read_wos,
 )
+from pyxxdi.keywords import (
+    clean_keywords,
+    normalize_keywords,
+)
+
+# ---------------------------------------------------------------------
+# Metrics layer
+# ---------------------------------------------------------------------
 from pyxxdi.metrics import (
     g_index,
     h_index,
@@ -65,6 +80,15 @@ from pyxxdi.utils import (
 )
 
 # ---------------------------------------------------------------------
+# Schema layer
+# ---------------------------------------------------------------------
+from .schemas import (
+    SchemaValidationError,
+    harmonize_schema,
+    validate_schema,
+)
+
+# ---------------------------------------------------------------------
 # Public namespace
 # ---------------------------------------------------------------------
 
@@ -76,13 +100,17 @@ __all__ = [
     "read_scopus",
     "read_wos",
     "read_openalex",
-    # schema
+    # schema constants
     "CANONICAL_COLUMNS",
     "REQUIRED_COLUMNS",
     "METRIC_REQUIRED_COLUMNS",
     "INSTITUTION_REQUIRED_COLUMNS",
     "DTYPE_MAP",
-    # validation
+    # schema functions
+    "harmonize_schema",
+    "validate_schema",
+    "SchemaValidationError",
+    # validation utils
     "ValidationError",
     "ValidationReport",
     "validate",
@@ -94,7 +122,6 @@ __all__ = [
     "deduplicate",
     "drop_duplicate_doi",
     "drop_duplicate_title_year",
-    "clean_affiliations",
     "clean_keywords",
     # metrics
     "metric",
@@ -109,4 +136,19 @@ __all__ = [
     "xo_index",
     "xx_index",
     "xxd_index",
+    # Cleaning
+    "normalize_keywords",
+    # affiliations
+    "clean_affiliations",
+    # subjects
+    "classify_subjects",
+    # analytics
+    "institution_profile",
+    "author_profile",
+    "collaboration_network",
+    "temporal_trends",
+    "researcher_dashboard",
+    "compare_researchers",
+    "compare_institutions",
+    "export_report",
 ]

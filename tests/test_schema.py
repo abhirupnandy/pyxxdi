@@ -4,7 +4,11 @@ Tests for pyxxdi schema layer.
 
 from __future__ import annotations
 
+import pandas as pd
+import pytest
+
 import pyxxdi as px
+from pyxxdi.schemas import SchemaValidationError, validate_schema
 
 
 def test_canonical_columns_exists() -> None:
@@ -41,3 +45,59 @@ def test_title_authors_year_order() -> None:
     idx_year = px.CANONICAL_COLUMNS.index("year")
 
     assert idx_title < idx_authors < idx_year
+
+
+def test_validate_schema_success() -> None:
+    df = pd.DataFrame(
+        {
+            "record_id": ["1"],
+            "title": ["Paper A"],
+            "year": [2020],
+            "source": ["Journal X"],
+            "citations": [12],
+        }
+    )
+
+    validate_schema(df)
+
+
+def test_validate_schema_missing_required() -> None:
+    df = pd.DataFrame(
+        {
+            "title": ["Paper A"],
+            "year": [2020],
+        }
+    )
+
+    with pytest.raises(SchemaValidationError):
+        validate_schema(df)
+
+
+def test_validate_schema_negative_citations() -> None:
+    df = pd.DataFrame(
+        {
+            "record_id": ["1"],
+            "title": ["Paper A"],
+            "year": [2020],
+            "source": ["Journal X"],
+            "citations": [-5],
+        }
+    )
+
+    with pytest.raises(SchemaValidationError):
+        validate_schema(df)
+
+
+def test_validate_schema_blank_title() -> None:
+    df = pd.DataFrame(
+        {
+            "record_id": ["1"],
+            "title": [""],
+            "year": [2020],
+            "source": ["Journal X"],
+            "citations": [0],
+        }
+    )
+
+    with pytest.raises(SchemaValidationError):
+        validate_schema(df)
