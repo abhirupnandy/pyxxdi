@@ -14,9 +14,6 @@ def validate_dataframe(df: pd.DataFrame) -> None:
     if not isinstance(df, pd.DataFrame):
         raise TypeError("df must be a pandas DataFrame")
 
-    if df.empty:
-        raise ValueError("df is empty")
-
 
 def validate_citations_column(
     df: pd.DataFrame,
@@ -31,12 +28,12 @@ def validate_citations_column(
 
 def validate_unit_column(
     df: pd.DataFrame,
-    unit: str,
+    unit: str | None,
 ) -> None:
     """
     Ensure grouping column exists.
     """
-    if unit not in df.columns:
+    if unit is not None and unit not in df.columns:
         raise ValueError(f"unit column '{unit}' not found")
 
 

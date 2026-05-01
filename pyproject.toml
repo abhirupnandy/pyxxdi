@@ -36,8 +36,6 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
   "Topic :: Scientific/Engineering :: Information Analysis"
 ]
-Documentation = "https://github.com/abhirupnandy/pyxxdi"
-
 dependencies = [
   "pandas>=2.2.0",
   "numpy>=1.26.0",
@@ -111,11 +109,3 @@ source = ["src/pyxxdi"]
 [tool.coverage.report]
 show_missing = true
 skip_covered = false
-
-[dependency-groups]
-dev = [
-    "mypy>=1.20.2",
-    "pytest>=9.0.3",
-    "pytest-cov>=7.1.0",
-    "ruff>=0.15.11",
-]

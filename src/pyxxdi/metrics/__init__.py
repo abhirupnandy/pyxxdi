@@ -2,7 +2,6 @@
 
 from pyxxdi.metrics.advanced import (
     xc_index,
-    xo_index,
     xx_index,
     xxd_index,
 )
@@ -27,7 +26,6 @@ __all__ = [
     "xd_field_normalized_index",
     "xd_ivw_index",
     "xc_index",
-    "xo_index",
     "xx_index",
     "xxd_index",
 ]

@@ -15,8 +15,7 @@ def test_validate_dataframe_type():
 
 
 def test_validate_dataframe_empty():
-    with pytest.raises(ValueError):
-        validate_dataframe(pd.DataFrame())
+    validate_dataframe(pd.DataFrame())
 
 
 def test_missing_citations():

@@ -187,13 +187,6 @@ def test_xd_index():
     assert "xd_index" in out.columns
 
 
-def test_xo_index():
-    df = sample_df()
-    out = px.xo_index(df)
-
-    assert not out.empty
-    assert "xo_index" in out.columns
-
 
 # -------------------------------------------------------------------
 # Nested Metrics
@@ -300,7 +293,6 @@ def test_root_namespace():
     assert callable(px.g_index)
     assert callable(px.x_index)
     assert callable(px.xd_index)
-    assert callable(px.xo_index)
     assert callable(px.xx_index)
     assert callable(px.xxd_index)
 

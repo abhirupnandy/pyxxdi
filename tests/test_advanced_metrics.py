@@ -19,9 +19,6 @@ def test_xc():
     assert not px.xc_index(sample()).empty
 
 
-def test_xo():
-    assert not px.xo_index(sample()).empty
-
 
 def test_xx():
     assert not px.xx_index(sample()).empty

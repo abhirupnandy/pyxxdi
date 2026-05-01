@@ -16,6 +16,9 @@ ALIASES = {
 
 
 def _split_terms(value: object) -> list[str]:
+    if isinstance(value, (list, tuple, set)):
+        return [str(x).strip() for x in value if str(x).strip()]
+
     if pd.isna(value):
         return []
 

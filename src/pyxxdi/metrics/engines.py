@@ -11,16 +11,13 @@ from pyxxdi.metrics.validators import (
     validate_citations_column,
     validate_dataframe,
     validate_metric_name,
-    validate_unit_column,
 )
 
 MetricFunc = Callable[[object], float | int]
+_DEFAULT_GLOBAL_UNIT = "all"
 
 
 def _get_kernel(metric: str) -> MetricFunc:
-    """
-    Return metric kernel function.
-    """
     kernels: dict[str, MetricFunc] = {
         "h": compute_h,
         "g": compute_g,
@@ -29,11 +26,28 @@ def _get_kernel(metric: str) -> MetricFunc:
     return kernels[metric]
 
 
+def _resolve_grouping(
+    df: pd.DataFrame,
+    unit: str | None,
+) -> tuple[pd.DataFrame, str | None]:
+    """
+    Resolve grouping mode.
+
+    Global mode is used when unit is None or the requested unit column is absent.
+    """
+    if unit is None or unit not in df.columns:
+        work = df.copy()
+        work[_DEFAULT_GLOBAL_UNIT] = _DEFAULT_GLOBAL_UNIT
+        return work, _DEFAULT_GLOBAL_UNIT
+
+    return df, unit
+
+
 def metric(
     df: pd.DataFrame,
     *,
     metric: str = "x",
-    unit: str = "institution",
+    unit: str | None = "institution",
     citations: str = "citations",
     sort: bool = True,
     top_n: int | None = None,
@@ -43,15 +57,15 @@ def metric(
     subject: str | list[str] | None = None,
     document_type: str | list[str] | None = None,
 ) -> pd.DataFrame:
-    """
-    Compute grouped citation metric table.
-    """
+    """Compute citation metric table in grouped or global mode."""
     validate_dataframe(df)
     validate_metric_name(metric)
     validate_citations_column(df, citations)
-    validate_unit_column(df, unit)
 
-    df = apply_filters(
+    if df.empty:
+        return pd.DataFrame(columns=["unit", "records", "value", "rank"])
+
+    filtered = apply_filters(
         df,
         year_from=year_from,
         year_to=year_to,
@@ -59,37 +73,29 @@ def metric(
         document_type=document_type,
     )
 
-    if df.empty:
+    if filtered.empty:
         return pd.DataFrame(columns=["unit", "records", "value", "rank"])
 
+    grouped_df, resolved_unit = _resolve_grouping(filtered, unit)
     kernel = _get_kernel(metric)
 
     rows: list[dict[str, object]] = []
 
-    grouped = df.groupby(unit, dropna=True)
+    grouped = grouped_df.groupby(resolved_unit, dropna=True)
 
     for name, group in grouped:
         records = int(len(group))
-
         if records < min_records:
             continue
 
         cites = prepare_citations(group[citations])
-
         value = kernel(cites)
-
-        rows.append(
-            {
-                "unit": name,
-                "records": records,
-                "value": value,
-            }
-        )
+        rows.append({"unit": name, "records": records, "value": value})
 
     result = pd.DataFrame(rows)
 
     if result.empty:
-        return result
+        return pd.DataFrame(columns=["unit", "records", "value", "rank"])
 
     if sort:
         result = result.sort_values(
@@ -98,7 +104,6 @@ def metric(
         )
 
     result["rank"] = result["value"].rank(method="dense", ascending=False).astype(int)
-
     result = result.reset_index(drop=True)
 
     if top_n is not None:
