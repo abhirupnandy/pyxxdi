@@ -30,7 +30,7 @@ px.h_index(df2, unit="institution")
 
 ## Main capabilities
 
-- Metrics: `h_index`, `g_index`, `x_index`, `xd_index`, `xc_index`, `xo_index`, `xx_index`, `xxd_index`
+- Metrics: `h_index`, `g_index`, `x_index`, `xd_index`, `xc_index`, `xx_index`, `xxd_index`
 - Cleaning: keyword normalization, affiliation normalization, publication deduplication
 - Parsing: Scopus, OpenAlex, CSV, Excel
 - Analytics: author/institution profiles, collaboration network, temporal trends, dashboard summary
@@ -45,6 +45,7 @@ raw = px.read_scopus("scopus_export.csv")
 clean = px.clean_keywords(px.clean_affiliations(raw))
 rank = px.xd_index(clean, unit="institution", category="subject")
 dash = px.researcher_dashboard(clean)
+px.institution_keyword_network(clean, keyword_col="author_keywords")
 px.export_report(clean, "report.xlsx")
 ```
 

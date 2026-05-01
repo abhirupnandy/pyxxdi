@@ -4,7 +4,7 @@ from .compare_institutions import compare_institutions
 from .dashboard import researcher_dashboard
 from .export import export_report
 from .institutions import institution_profile
-from .network import collaboration_network
+from .network import collaboration_network, institution_keyword_network
 from .temporal import temporal_trends
 
 __all__ = [
@@ -15,5 +15,6 @@ __all__ = [
     "export_report",
     "institution_profile",
     "collaboration_network",
+    "institution_keyword_network",
     "temporal_trends",
 ]

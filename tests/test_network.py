@@ -45,3 +45,32 @@ def test_single_author_ignored() -> None:
     out = px.collaboration_network(df)
 
     assert len(out) == 0
+
+
+def test_institution_keyword_network_citation_weight() -> None:
+    df = pd.DataFrame(
+        {
+            "institution": ["A", "A", "B"],
+            "author_keywords": ["AI; ML", "AI", "ML"],
+            "citations": [10, 5, 2],
+        }
+    )
+
+    out = px.institution_keyword_network(df)
+
+    row = out[(out["source"] == "A") & (out["target"] == "ai")].iloc[0]
+    assert row["weight"] == 15
+
+
+def test_institution_keyword_network_custom_weight() -> None:
+    df = pd.DataFrame(
+        {
+            "institution": ["A", "A"],
+            "author_keywords": ["AI", "AI"],
+            "altmetric": [3.0, 2.0],
+        }
+    )
+
+    out = px.institution_keyword_network(df, weight_col="altmetric")
+
+    assert out.loc[0, "weight"] == 5.0

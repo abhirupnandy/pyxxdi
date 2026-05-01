@@ -9,6 +9,7 @@ from pyxxdi.analytics import (
     compare_institutions,
     compare_researchers,
     export_report,
+    institution_keyword_network,
     institution_profile,
     researcher_dashboard,
     temporal_trends,
@@ -32,7 +33,6 @@ from pyxxdi.metrics import (
     xd_fractional_index,
     xd_index,
     xd_ivw_index,
-    xo_index,
     xx_index,
     xxd_index,
 )
@@ -97,7 +97,6 @@ __all__ = [
     "xd_field_normalized_index",
     "xd_ivw_index",
     "xc_index",
-    "xo_index",
     "xx_index",
     "xxd_index",
     # Classification
@@ -106,6 +105,7 @@ __all__ = [
     "institution_profile",
     "author_profile",
     "collaboration_network",
+    "institution_keyword_network",
     "temporal_trends",
     "researcher_dashboard",
     "compare_researchers",
