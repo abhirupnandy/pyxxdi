@@ -2,7 +2,7 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/pyxxdi.svg)](https://pypi.org/project/pyxxdi/)
 
-`pyxxdi` is a Python package for bibliometric analytics, scientometric metrics, and research intelligence workflows.
+`pyxxdi` is a Python package for bibliometric analytics, scientometric metrics, and research intelligence workflows. The package is also available for use in R and is called  "xxdi".
 
 ## Install
 
@@ -51,7 +51,9 @@ px.export_report(clean, "report.xlsx")
 
 ## Citation
 
-If you use `pyxxdi` in research outputs, please cite the software release and associated methodological references.
+If you use `pyxxdi` in research outputs, please cite the software release and the following article: 
+
+Nandy, A., & Das, N. R. (2026). Expertise Indices: Variants, Modifications, Advancements, and Computational Tools in R. arXiv preprint arXiv:2604.22811.
 
 ## License
 
