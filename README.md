@@ -55,4 +55,4 @@ If you use `pyxxdi` in research outputs, please cite the software release and as
 
 ## License
 
-MIT
+GNU GPL v3
